@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification | Future Cert Labs</title>
+    <meta name="description" content="Official online certificate verification portal for Future Cert Labs. Verify credential authenticity and issuance details.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           Design System & Custom Properties
+           Brand: Future Cert Labs
+           Theme: Crisp White (#FFFFFF), Solid Black (#000000), Vibrant Orange (#FF5500)
+           ========================================================================== */
+        :root {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #FAFAFA;
+            --bg-card: #FFFFFF;
+            --text-main: #000000;
+            --text-secondary: #4A4A4A;
+            --text-muted: #737373;
+            --accent-orange: #FF5500;
+            --accent-orange-hover: #E04B00;
+            --accent-orange-light: #FFF4EE;
+            --accent-orange-glow: rgba(255, 85, 0, 0.18);
+            --border-light: #EBEBEB;
+            --border-medium: #D1D5DB;
+            --border-orange: #FFD2BC;
+            --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-card: 0 20px 45px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+            --shadow-card-hover: 0 24px 50px -10px rgba(0, 0, 0, 0.11), 0 0 1px 1px rgba(0, 0, 0, 0.06);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ==========================================================================
+           Reset & Base Styles
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            background-image: 
+                radial-gradient(var(--border-light) 1px, transparent 1px),
+                radial-gradient(circle at top right, var(--accent-orange-light) 0%, transparent 40%);
+            background-size: 24px 24px, 100% 100%;
+            background-position: 0 0, 0 0;
+            background-repeat: repeat, no-repeat;
+        }
+
+        /* ==========================================================================
+           Header / Navigation Bar
+           ========================================================================== */
+        .site-header {
+            width: 100%;
+            border-bottom: 1px solid var(--border-light);
+            background-color: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            transition: var(--transition-smooth);
+        }
+
+        .brand-logo-icon {
+            width: 34px;
+            height: 34px;
+            background: var(--text-main);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .brand-logo-icon::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-orange);
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+        }
+
+        .brand-text-accent {
+            color: var(--accent-orange);
+        }
+
+        .header-security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-full);
+        }
+
+        .lock-icon {
+            color: var(--accent-orange);
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ==========================================================================
+           Main Layout & Verification Card
+           ========================================================================== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 1.25rem;
+            position: relative;
+        }
+
+        .verification-container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .verification-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .verification-card:hover {
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        /* Card Top Orange Accent Stripe */
+        .card-top-bar {
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-orange) 0%, #FF8533 100%);
+            width: 100%;
+        }
+
+        .card-body {
+            padding: 2.25rem 2.25rem 2rem 2.25rem;
+        }
+
+        /* Card Header & Brand Identifier */
+        .card-header {
+            text-align: center;
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .card-sub-brand {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        /* Verification Status Badge - Highly Visible & Highlighted */
+        .status-badge-container {
+            margin: 1.5rem 0 2rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .status-badge {
+            background-color: var(--accent-orange-light);
+            border: 2px solid var(--accent-orange);
+            color: var(--accent-orange);
+            padding: 0.85rem 1.75rem;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.0625rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 16px var(--accent-orange-glow);
+            position: relative;
+            animation: pulse-glow 3s infinite;
+        }
+
+        .status-indicator-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-orange);
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+        }
+
+        .status-indicator-dot::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            background-color: var(--accent-orange);
+            opacity: 0.5;
+            animation: status-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes status-ping {
+            0% { transform: scale(1); opacity: 0.75; }
+            75%, 100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 4px 16px var(--accent-orange-glow);
+            }
+            50% {
+                box-shadow: 0 4px 24px rgba(255, 85, 0, 0.32);
+            }
+        }
+
+        .status-icon {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.5;
+        }
+
+        /* Certificate Details Grid */
+        .details-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-medium);
+        }
+
+        .detail-item:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .detail-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+
+        .detail-value.name-highlight {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: var(--text-main);
+        }
+
+        /* Certificate Number with Copy Button */
+        .cert-number-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .cert-number {
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--text-main);
+        }
+
+        .btn-copy {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.35rem 0.55rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: var(--transition-smooth);
+            font-family: var(--font-sans);
+        }
+
+        .btn-copy:hover {
+            color: var(--accent-orange);
+            background-color: var(--accent-orange-light);
+        }
+
+        .btn-copy svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Verification Security & QR Section */
+        .security-footer-box {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.25rem;
+            align-items: center;
+            padding: 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            border-left: 3px solid var(--accent-orange);
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+        }
+
+        .qr-frame {
+            background: #FFFFFF;
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 76px;
+            height: 76px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .qr-frame svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .security-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .security-title {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .security-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .security-hash {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.25rem;
+            max-width: fit-content;
+        }
+
+        /* Action Buttons */
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.875rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            font-family: var(--font-sans);
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--text-main);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #222222;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-main);
+            border-color: var(--border-medium);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background-color: var(--accent-orange-light);
+            transform: translateY(-1px);
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Portal Trust Banner below card */
+        .trust-banner {
+            margin-top: 1.75rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .trust-item svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent-orange);
+        }
+
+        /* ==========================================================================
+           Footer
+           ========================================================================== */
+        .site-footer {
+            border-top: 1px solid var(--border-light);
+            padding: 1.75rem 1.5rem;
+            background-color: #FFFFFF;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-copyright {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-link:hover {
+            color: var(--accent-orange);
+        }
+
+        /* ==========================================================================
+           Toast Notification
+           ========================================================================== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--text-main);
+            color: #FFFFFF;
+            padding: 0.85rem 1.25rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            z-index: 100;
+            transform: translateY(120%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: var(--accent-orange);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ==========================================================================
+           Modal for "Verify Another"
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 99;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 480px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0.35rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--text-main);
+            background: var(--bg-secondary);
+        }
+
+        .modal-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1.25rem 0;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-family: var(--font-mono);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-input:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px var(--accent-orange-glow);
+        }
+
+        /* ==========================================================================
+           Responsive Adjustments
+           ========================================================================== */
+        @media (max-width: 640px) {
+            .header-container {
+                padding: 0.875rem 1rem;
+            }
+
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .card-body {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .card-title {
+                font-size: 1.45rem;
+            }
+
+            .status-badge {
+                font-size: 0.9375rem;
+                padding: 0.75rem 1.25rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .detail-value.name-highlight {
+                font-size: 1.15rem;
+            }
+
+            .card-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .security-footer-box {
+                grid-template-columns: 1fr;
+                text-align: center;
+                justify-items: center;
+            }
+
+            .security-title {
+                justify-content: center;
+            }
+
+            .security-hash {
+                margin: 0.25rem auto 0 auto;
+            }
+
+            .toast {
+                left: 1rem;
+                right: 1rem;
+                bottom: 1rem;
+                justify-content: center;
+            }
+        }
+
+        /* ==========================================================================
+           Print Stylesheet for Clean Official Document Printing
+           ========================================================================== */
+        @media print {
+            body {
+                background: #FFFFFF !important;
+                background-image: none !important;
+            }
+
+            .site-header,
+            .card-actions,
+            .trust-banner,
+            .site-footer,
+            .btn-copy,
+            .toast,
+            .modal-overlay {
+                display: none !important;
+            }
+
+            .main-content {
+                padding: 0 !important;
+            }
+
+            .verification-container {
+                max-width: 100% !important;
+            }
+
+            .verification-card {
+                border: 2px solid #000000 !important;
+                box-shadow: none !important;
+            }
+
+            .status-badge {
+                border: 2px solid #FF5500 !important;
+                color: #FF5500 !important;
+                animation: none !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="#" class="brand-link" aria-label="Future Cert Labs Homepage">
+                <div class="brand-logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <span>Future Cert <span class="brand-text-accent">Labs</span></span>
+            </a>
+
+            <div class="header-security-badge">
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>Official Verification System</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Verification Section -->
+    <main class="main-content">
+        <div class="verification-container">
+            
+            <!-- Main Verification Card -->
+            <article class="verification-card" id="verificationCard">
+                <div class="card-top-bar"></div>
+                
+                <div class="card-body">
+                    <!-- Header Area inside Card -->
+                    <header class="card-header">
+                        <span class="card-sub-brand">Credential Authentication Portal</span>
+                        <h1 class="card-title">Future Cert Labs</h1>
+                    </header>
+
+                    <!-- Verification Status Badge (Highlighted in Orange) -->
+                    <div class="status-badge-container">
+                        <div class="status-badge" role="status" aria-live="polite">
+                            <span class="status-indicator-dot"></span>
+                            <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span>CERTIFICATE VALID</span>
+                        </div>
+                    </div>
+
+                    <!-- Required Details List -->
+                    <section class="details-list" aria-label="Certificate Details">
+                        
+                        <!-- Issued To -->
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Issued To
+                            </span>
+                            <div class="detail-value name-highlight">STHITA PRAJNA SOUMIK POHI</div>
+                        </div>
+
+                        <!-- Issue Date -->
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Issue Date
+                            </span>
+                            <div class="detail-value">2/8/2026</div>
+                        </div>
+
+                        <!-- Certificate Number -->
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                    <line x1="6" y1="8" x2="10" y2="8"></line>
+                                    <line x1="6" y1="12" x2="18" y2="12"></line>
+                                    <line x1="6" y1="16" x2="14" y2="16"></line>
+                                </svg>
+                                Certificate Number
+                            </span>
+                            <div class="cert-number-wrapper">
+                                <span class="cert-number" id="certNumberValue">8906032131069</span>
+                                <button type="button" class="btn-copy" id="btnCopyCert" aria-label="Copy certificate number" title="Copy to clipboard">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    <span id="copyBtnText">Copy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <!-- Cryptographic / QR Verification Proof -->
+                    <div class="security-footer-box">
+                        <div class="qr-frame" title="Cryptographic verification QR code">
+                            <!-- Clean SVG QR Code Representation -->
+                            <svg viewBox="0 0 100 100" fill="#000000" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Top-Left Finder -->
+                                <rect x="5" y="5" width="30" height="30" rx="3" fill="#000000" />
+                                <rect x="9" y="9" width="22" height="22" rx="2" fill="#FFFFFF" />
+                                <rect x="14" y="14" width="12" height="12" rx="1" fill="#FF5500" />
+                                
+                                <!-- Top-Right Finder -->
+                                <rect x="65" y="5" width="30" height="30" rx="3" fill="#000000" />
+                                <rect x="69" y="9" width="22" height="22" rx="2" fill="#FFFFFF" />
+                                <rect x="74" y="14" width="12" height="12" rx="1" fill="#FF5500" />
+                                
+                                <!-- Bottom-Left Finder -->
+                                <rect x="5" y="65" width="30" height="30" rx="3" fill="#000000" />
+                                <rect x="9" y="69" width="22" height="22" rx="2" fill="#FFFFFF" />
+                                <rect x="14" y="74" width="12" height="12" rx="1" fill="#FF5500" />
+                                
+                                <!-- Internal QR Pattern Modules -->
+                                <rect x="42" y="6" width="6" height="6" fill="#000000" />
+                                <rect x="52" y="6" width="6" height="6" fill="#000000" />
+                                <rect x="42" y="16" width="6" height="6" fill="#000000" />
+                                <rect x="52" y="24" width="6" height="14" fill="#000000" />
+                                <rect x="42" y="28" width="6" height="6" fill="#000000" />
+                                
+                                <rect x="6" y="42" width="6" height="6" fill="#000000" />
+                                <rect x="16" y="42" width="12" height="6" fill="#000000" />
+                                <rect x="6" y="52" width="6" height="6" fill="#000000" />
+                                <rect x="18" y="52" width="8" height="6" fill="#000000" />
+                                
+                                <rect x="36" y="40" width="8" height="8" fill="#FF5500" />
+                                <rect x="48" y="44" width="8" height="8" fill="#000000" />
+                                <rect x="60" y="40" width="6" height="6" fill="#000000" />
+                                <rect x="72" y="42" width="10" height="6" fill="#000000" />
+                                <rect x="86" y="42" width="8" height="6" fill="#000000" />
+                                
+                                <rect x="40" y="54" width="8" height="6" fill="#000000" />
+                                <rect x="54" y="54" width="12" height="6" fill="#000000" />
+                                <rect x="70" y="52" width="6" height="12" fill="#000000" />
+                                <rect x="82" y="54" width="12" height="6" fill="#000000" />
+                                
+                                <rect x="42" y="66" width="6" height="14" fill="#000000" />
+                                <rect x="52" y="68" width="6" height="6" fill="#000000" />
+                                <rect x="62" y="66" width="14" height="6" fill="#000000" />
+                                <rect x="80" y="66" width="14" height="6" fill="#000000" />
+                                <rect x="52" y="78" width="16" height="6" fill="#000000" />
+                                <rect x="74" y="76" width="8" height="18" fill="#000000" />
+                                <rect x="86" y="78" width="8" height="6" fill="#000000" />
+                                <rect x="42" y="86" width="6" height="8" fill="#000000" />
+                                <rect x="52" y="88" width="16" height="6" fill="#000000" />
+                                <rect x="86" y="88" width="8" height="6" fill="#000000" />
+                            </svg>
+                        </div>
+                        <div class="security-details">
+                            <span class="security-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-orange)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                Tamper-Proof Cryptographic Record
+                            </span>
+                            <p class="security-desc">Direct registry record authenticated on Future Cert Labs Global Trust Ledger.</p>
+                            <span class="security-hash">SHA-256: 8f9b...31069</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Action Buttons -->
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" id="btnPrint" aria-label="Print or Save Official Record">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                <rect x="6" y="14" width="12" height="8"></rect>
+                            </svg>
+                            <span>Print Record</span>
+                        </button>
+                        <button type="button" class="btn btn-outline" id="btnOpenLookup" aria-label="Verify Another Certificate">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <span>Verify Another</span>
+                        </button>
+                    </div>
+
+                </div>
+            </article>
+
+            <!-- Trust Indicators below card -->
+            <div class="trust-banner">
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Instant Registry Verification</span>
+                </div>
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span>ISO/IEC 27001 Certified</span>
+                </div>
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 14 14"></polyline>
+                    </svg>
+                    <span>Real-time Status Sync</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-copyright">&copy; 2026 Future Cert Labs Inc. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy" class="footer-link" onclick="showToast('Privacy Policy (Public Ledger Access)')">Privacy Policy</a>
+                <a href="#terms" class="footer-link" onclick="showToast('Terms of Verification')">Terms of Service</a>
+                <a href="#contact" class="footer-link" onclick="showToast('Support: support@futurecertlabs.com')">Contact Authority</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Toast Feedback Notification -->
+    <div class="toast" id="feedbackToast" role="status" aria-live="assertive">
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toastMessage">Certificate Number copied to clipboard!</span>
+    </div>
+
+    <!-- Modal for "Verify Another Certificate" -->
+    <div class="modal-overlay" id="lookupModal" aria-hidden="true">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" id="btnCloseModal" aria-label="Close dialog">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 id="modalTitle" style="font-size: 1.25rem; font-weight: 800; color: #000000; margin-bottom: 0.5rem;">Verify Another Credential</h2>
+            <p style="font-size: 0.875rem; color: #555555;">Enter the 13-digit Certificate Number issued by Future Cert Labs to validate authenticity.</p>
+            
+            <form id="lookupForm" onsubmit="handleLookup(event)">
+                <div class="modal-input-group">
+                    <label for="lookupCertId" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #555;">Certificate ID</label>
+                    <input type="text" id="lookupCertId" class="modal-input" placeholder="e.g. 8906032131069" required pattern="[0-9]{10,16}">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; background: #FF5500; border-color: #FF5500;">
+                    Search Registry
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactive Script -->
+    <script>
+        // Copy Certificate Number to Clipboard
+        const btnCopyCert = document.getElementById('btnCopyCert');
+        const certNumberValue = document.getElementById('certNumberValue');
+        const copyBtnText = document.getElementById('copyBtnText');
+        const toast = document.getElementById('feedbackToast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        function showToast(msg) {
+            toastMessage.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        if (btnCopyCert) {
+            btnCopyCert.addEventListener('click', async () => {
+                const textToCopy = certNumberValue.innerText.trim();
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    copyBtnText.textContent = 'Copied!';
+                    showToast('Certificate number copied to clipboard!');
+                    setTimeout(() => {
+                        copyBtnText.textContent = 'Copy';
+                    }, 2000);
+                } catch (err) {
+                    // Fallback
+                    const tempInput = document.createElement('input');
+                    tempInput.value = textToCopy;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    copyBtnText.textContent = 'Copied!';
+                    showToast('Certificate number copied!');
+                    setTimeout(() => {
+                        copyBtnText.textContent = 'Copy';
+                    }, 2000);
+                }
+            });
+        }
+
+        // Print Handler
+        const btnPrint = document.getElementById('btnPrint');
+        if (btnPrint) {
+            btnPrint.addEventListener('click', () => {
+                window.print();
+            });
+        }
+
+        // Modal Controls
+        const btnOpenLookup = document.getElementById('btnOpenLookup');
+        const lookupModal = document.getElementById('lookupModal');
+        const btnCloseModal = document.getElementById('btnCloseModal');
+
+        if (btnOpenLookup && lookupModal && btnCloseModal) {
+            btnOpenLookup.addEventListener('click', () => {
+                lookupModal.classList.add('active');
+                lookupModal.setAttribute('aria-hidden', 'false');
+                document.getElementById('lookupCertId').focus();
+            });
+
+            btnCloseModal.addEventListener('click', () => {
+                lookupModal.classList.remove('active');
+                lookupModal.setAttribute('aria-hidden', 'true');
+            });
+
+            lookupModal.addEventListener('click', (e) => {
+                if (e.target === lookupModal) {
+                    lookupModal.classList.remove('active');
+                    lookupModal.setAttribute('aria-hidden', 'true');
+                }
+            });
+        }
+
+        // Handle Search Demo
+        function handleLookup(e) {
+            e.preventDefault();
+            const inputVal = document.getElementById('lookupCertId').value.trim();
+            if (inputVal === '8906032131069') {
+                lookupModal.classList.remove('active');
+                showToast('Certificate 8906032131069 loaded and valid!');
+            } else {
+                showToast(`Searching registry for ${inputVal}... Verified!`);
+                setTimeout(() => {
+                    lookupModal.classList.remove('active');
+                }, 800);
+            }
+        }
+    </script>
+</body>
+</html>
